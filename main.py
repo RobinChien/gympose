@@ -6,6 +6,8 @@ import time
 import human
 import camera
 from sys import platform
+from imutils.video import FPS
+from imutils.video import VideoStream
 
 dit_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append('/home/supergan/Codelab/openpose/python')
@@ -40,6 +42,14 @@ def main():
     frontCam = camera.WebcamVideoStream(0).start()
     sideCam = camera.WebcamVideoStream(1).start()
     
+    # OpenCV object tracker objects
+    tracker = cv2.TrackerCSRT_create()
+    # initialize the bounding box coordinates of the object we are going
+    # to track
+    initBB = None
+    # initialize the FPS throughput estimator
+    fps = None
+
     while 1:
         
         #Press q key, then Break Loop
@@ -54,6 +64,35 @@ def main():
         frontPoints, frontImage = openpose.forward(img_0, True)
         sidePoints, sideImage = openpose.forward(img_1, True)
         
+        if initBB is None: 
+            initBB = (127,0,10,10)
+            tracker.init(sideImage, initBB)
+            fps = FPS().start() 
+        
+        # grab the new bounding box coordinates of the object
+        (success, box) = tracker.update(sideImage)
+
+        # check to see if the tracking was a success
+        if success:
+            (x, y, w, h) = [int(v) for v in box]
+            cv2.rectangle(sideImage, (x, y), (x + w, y + h),(0, 255, 0), 2)
+
+        # update the FPS counter
+        fps.update()
+        fps.stop()
+
+        # initialize the set of information we'll be displaying on
+        # the frame
+        info = [
+                    ("FPS", "{:.2f}".format(fps.fps())),
+                ]
+
+                # loop over the info tuples and draw them on our frame
+        for (i, (k, v)) in enumerate(info):
+            text = "{}: {}".format(k, v)
+            cv2.putText(sideImage, text, (10, 480 - ((i * 20) + 20)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
+
         #Show Image
         cv2.imshow('Cam0 Human Pose Estimation', frontImage)
         cv2.imshow('Cam1 Human Pose Estimation', sideImage)
