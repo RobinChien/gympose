@@ -87,29 +87,28 @@ class Human:
             return 1
         else:
             return 0
-			
-	def hand_knee(self):
-		a=self.RW[1]-self.RS[1]
-		b=self.RS[0]-self.RW[0]
-		c=(self.RW[0]*self.RS[1])-(self.RS[0]*self.RW[1])
-		e=math.sqrt((a*a)+(b*b))
-		d=abs((a*self.RK[0])+(b*self.RK[1])+c)/e
-		if self.RS[0] <= self.RK[0]:
-			if self.RW[0] <= self.RK[0]:
-				if d>0:
-					return 1;
-				else:
-					return 0;
-			else:
-				return 0;
-		else:
-			return 0;
+
+    def hand_knee(self):
+        a=self.RW[1]-self.RS[1]
+        b=self.RS[0]-self.RW[0]
+        c=(self.RW[0]*self.RS[1])-(self.RS[0]*self.RW[1])
+        e=math.sqrt((a*a)+(b*b))
+        d=abs((a*self.RK[0])+(b*self.RK[1])+c)/e
+        if self.RS[0] <= self.RK[0]:
+            if self.RW[0] <= self.RK[0]:
+                if d>0:
+                    return 1
+                else:
+                    return 0
+            else:
+                return 0
+        else:
+            return 0
 				
-	def measureArmBent(self):
-			
-        c11=self.RS
-        c22=self.RE
-        c33=self.RW
+    def measureArmBent(self):		
+        c1=self.RS
+        c2=self.RE
+        c3=self.RW
         ans3 = list(map(lambda x: (x[0]-x[1]), zip(c2,c1)))        
         results2= float(ans3[1])/float(ans3[0])		
         ans4 = list(map(lambda x: (x[0]-x[1]), zip(c3,c2)))		
@@ -118,5 +117,4 @@ class Human:
             return 1
         else:
             return 0
-
 

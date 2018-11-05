@@ -106,9 +106,10 @@ def main():
 
         
         try:
-            print("1 m_WristsAndAnkles:", frontView.measureWristsAndAnkles())
-            print("2 m_Shoulders And Anless Parallel:", frontView.measureShouldersAndAnleesParallel())
-            print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
+            #print("1 m_WristsAndAnkles:", frontView.measureWristsAndAnkles())
+            #print("2 m_Shoulders And Anless Parallel:", frontView.measureShouldersAndAnleesParallel())
+            #print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
+            print(frontView.measureArmBent())
             print('\n')
         except ZeroDivisionError as e:
             print("ZeroDivisionError:", e)
