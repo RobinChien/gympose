@@ -49,7 +49,7 @@ def main():
     initBB = None
     # initialize the FPS throughput estimator
     fps = None
-
+    ib = 0
     while 1:
         
         #Press q key, then Break Loop
@@ -109,7 +109,11 @@ def main():
             #print("1 m_WristsAndAnkles:", frontView.measureWristsAndAnkles())
             #print("2 m_Shoulders And Anless Parallel:", frontView.measureShouldersAndAnleesParallel())
             #print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
-            print(frontView.measureArmBent())
+            #if(ib == 0):
+                #ib = frontView.getInitialBack()
+            
+            #print(frontView.measureBack(ib['IB']))
+            print(frontView.getInitialBack())
             print('\n')
         except ZeroDivisionError as e:
             print("ZeroDivisionError:", e)

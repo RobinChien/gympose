@@ -118,34 +118,29 @@ class Human:
         else:
             return 0
 
-<<<<<<< HEAD
-=======
-
-
     #get initial back
     def getInitialBack(self):
-        bh=math.pow((self.Neck[0]-self.MH[0]), 2)
-        bw=math.pow((self.Neck[1]-self.MH[1]), 2)
+        bh=math.pow((self.Nose[0]-self.MH[0]), 2)
+        bw=math.pow((self.Nose[1]-self.MH[1]), 2)
         ib=math.sqrt(bh+bw)
 
         return {'IB':ib}
 
     #measure Back
-    def measureBack(self, ib):
+    def measureBack(self, ib=0):
         
          #Threshold
-        th=0.15 
+        th=10 
 
-        nbh=math.pow((self.Neck[0]-self.MH[0]), 2)
-        nbw=math.pow((self.Neck[1]-self.MH[1]), 2)
+        nbh=math.pow((self.Nose[0]-self.MH[0]), 2)
+        nbw=math.pow((self.Nose[1]-self.MH[1]), 2)
         nb=math.sqrt(nbh+nbw)
-
+        
+        print("ib", ib)
         diff=abs(ib-nb)
+        print("diff", diff)
 
         if diff<th:
             return 1
         else:
             return 0
-
-
->>>>>>> b6c6020a1f841c09146eb09581b3411108382b5a
