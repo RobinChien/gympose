@@ -111,6 +111,39 @@ def main():
             #print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
             #if(ib == 0):
                 #ib = frontView.getInitialBack()
+
+            if(frontView.measureWristsAndAnkles() == 0):
+                txt_err='手腕未超出腳踝'
+                #print on view
+                continue
+            if(frontView.measureShouldersAndAnleesParallel() == 0):
+                txt_err='肩膀和雙腳未平行'
+                #print on view
+                continue
+            if(frontView.measureShouldersAndAnkles() == 0):
+                txt_err='雙腳間距未超出肩膀寬度'
+                #print on view
+                continue
+            if(frontView.measureHandAndKnee() == 0):
+                txt_err='膝蓋沒有超出手臂'
+                #print on view
+                continue
+            if(frontView.measureArmAndBent() == 0):
+                txt_err='手臂彎曲'
+                #print on view
+                continue
+            if(frontView.measureBack() == 0):
+                txt_err='圓背'
+                #print on view
+                continue
+            if(frontView.measureNeckAndBottom == 0):
+                txt_err='脖子與臀位缺乏連動性'
+                #print on view
+                continue
+            if(frontView.measurechen == 0):
+                txt_err='臀位過高'
+                #print on view
+                continue
             
             #print(frontView.measureBack(ib['IB']))
             print(frontView.getInitialBack())
