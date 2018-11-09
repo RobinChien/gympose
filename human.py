@@ -144,3 +144,13 @@ class Human:
             return 1
         else:
             return 0
+
+    #measure if neck and bottom back at the same time
+    def measureNeckAndBottom(self, ineck, ibottom):
+        difNeck=abs(self.Neck[0]-ineck)
+        difBottom=abs(self.Neck[0]-MH[0])
+
+        if difNeck<0.15 && difBottom<0.15: #both back
+           return 1
+        else: 
+            return 0
