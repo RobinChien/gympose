@@ -1,4 +1,4 @@
-import math
+﻿import math
 
 class Human:
     def __init__(self, keypoints):
@@ -144,3 +144,21 @@ class Human:
             return 1
         else:
             return 0
+
+    def first_back(Initial_value):
+        #1,8
+        x=abs(Initial_value['Neck'][0]-Initial_value['MH'][0])
+        y=abs(Initial_value['Neck'][1]-Initial_value['MH'][1])
+        first_distance=math.sqrt((x*x)+(y*y))
+        return first_distance;
+
+
+    def check_back(self,first_distance):
+        #1,8
+        x=abs(self.Neck[0]-self.MH[0])
+        y=abs(self.Neck[1]-self.MH[1])
+        check_distance=math.sqrt((x*x)+(y*y))
+        if (first_distance-0.2) <= check_distance and check_distance <= (first_distance+0.2):
+            return 1;
+        else:
+            return 0;
