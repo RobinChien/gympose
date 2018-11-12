@@ -4,8 +4,10 @@ import cv2
 class WebcamVideoStream :
     def __init__(self, src = 0, width = 640, height = 480) :
         self.stream = cv2.VideoCapture(src)
-        self.stream.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.stream.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        self.width = width
+        self.height = height
+        self.stream.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
+        self.stream.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
         (self.grabbed, self.frame) = self.stream.read()
         self.started = False
         self.read_lock = Lock()
@@ -23,7 +25,7 @@ class WebcamVideoStream :
         while self.started :
             (grabbed, frame) = self.stream.read()
             self.read_lock.acquire()
-            self.grabbed, self.frame = grabbed, frame
+            self.grabbed, self.frame = grabbed, cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             self.read_lock.release()
 
     def read(self) :

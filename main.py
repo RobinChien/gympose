@@ -9,7 +9,7 @@ from sys import platform
 from imutils.video import FPS
 from imutils.video import VideoStream
 
-dit_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append('/home/supergan/Codelab/openpose/python')
 
 try:
@@ -31,7 +31,9 @@ def set_params():
     params["num_gpu_start"] = 0
     params["disable_blending"] = False
     # Ensure you point to the correct path where models are located
+    print(dir_path)
     params["default_model_folder"] = dir_path + "/../../../models/"
+    print(params["default_model_folder"])
     return params
 
 def main():
@@ -110,10 +112,11 @@ def main():
             #print("2 m_Shoulders And Anless Parallel:", frontView.measureShouldersAndAnleesParallel())
             #print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
             #if(ib == 0):
-                #ib = frontView.getInitialBack()
+                #ib = frontView.getInitBack()
             
             #print(frontView.measureBack(ib['IB']))
-            print(frontView.getInitialBack())
+            #print(frontView.getInitialBack())
+            print(frontView.measureArmBent())
             print('\n')
         except ZeroDivisionError as e:
             print("ZeroDivisionError:", e)

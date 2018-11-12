@@ -47,28 +47,14 @@ class Human:
 			
     def measureShouldersAndAnleesParallel(self):
 		
-	#陣列(肩膀)
-        c1=self.RS
-        c2=self.LS
-        #存放兩個陣列的變數
-        ans = list(map(lambda x: (x[0]-x[1]), zip(c2,c1)))
-        #進行陣列內第0跟1位置的計算
-        results= float(ans[1])/float(ans[0])
-	#得出肩膀之斜率
-        #print(results)
-	#印出肩膀結果
+        ans = self.LS-self.RS
+        s_line = float(ans[1])/float(ans[0])
 
 	#陣列(雙腳)
-        d1=self.RA
-        d2=self.LA
-	#存放兩個陣列的變數
-        ans2 = list(map(lambda x: (x[0]-x[1]), zip(d2,d1)))
-	#進行陣列內第0跟1位置的計算
-        results2= float(ans2[1])/float(ans2[0])
-	#得出雙腳之斜率
-        #print(results2)
-	#印出雙腳結果
-        if abs(results-results2)<0.15:
+        ans2 = self.LA-self.RA
+        a_line = float(ans2[1])/float(ans2[0])
+        
+        if abs(s_line-a_line)<0.15:
             return 1
         else:
             return 0
@@ -88,7 +74,7 @@ class Human:
         else:
             return 0
 
-    def hand_knee(self):
+    def mesureHandAndKnee(self):
         a=self.RW[1]-self.RS[1]
         b=self.RS[0]-self.RW[0]
         c=(self.RW[0]*self.RS[1])-(self.RS[0]*self.RW[1])
@@ -106,20 +92,29 @@ class Human:
             return 0
 				
     def measureArmBent(self):		
-        c1=self.RS
-        c2=self.RE
-        c3=self.RW
-        ans3 = list(map(lambda x: (x[0]-x[1]), zip(c2,c1)))        
+        
+        ans3 = self.RE-self.RS
         results2= float(ans3[1])/float(ans3[0])		
-        ans4 = list(map(lambda x: (x[0]-x[1]), zip(c3,c2)))		
+        
+        ans4 = self.RW-self.RE
         results3= float(ans4[1])/float(ans4[0])		
-        if abs(results2==results3):
+        
+        if abs(results2 == results3):
+            return 1
+        else:
+            return 0
+
+    def measureHipAndKnee(self):
+        mh = self.MH[1]
+        rk = self.RK[1]
+
+        if (mh-rk<0.2):
             return 1
         else:
             return 0
 
     #get initial back
-    def getInitialBack(self):
+    def getInitBack(self):
         bh=math.pow((self.Nose[0]-self.MH[0]), 2)
         bw=math.pow((self.Nose[1]-self.MH[1]), 2)
         ib=math.sqrt(bh+bw)
@@ -129,7 +124,7 @@ class Human:
     #measure Back
     def measureBack(self, ib=0):
         
-         #Threshold
+        #Threshold
         th=10 
 
         nbh=math.pow((self.Nose[0]-self.MH[0]), 2)
