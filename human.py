@@ -36,7 +36,8 @@ class Human:
         
     def getTArch(self):
         return {'RS':self.RS, 'LS':self.LS, 'Neck':self.Neck, 'MH':self.MH}
-				
+                
+    #手腕有無超出腳踝
     def measureWristsAndAnkles(self):
         hwidth = abs(self.RW[0]-self.LW[0])
         fwidth = abs(self.RA[0]-self.LA[0])
@@ -44,7 +45,8 @@ class Human:
             return 1
         else:
             return 0
-			
+    
+    #肩膀有無和雙腳平行
     def measureShouldersAndAnleesParallel(self):
 		
         ans = self.LS-self.RS
@@ -55,12 +57,34 @@ class Human:
         a_line = float(ans2[1])/float(ans2[0])
         
         if abs(s_line-a_line)<0.15:
+        #陣列(肩膀)
+        c1=self.RS
+        c2=self.LS
+        #存放兩個陣列的變數
+        ans = list(map(lambda x: (x[0]-x[1]), zip(c2,c1)))
+        #進行陣列內第0跟1位置的計算
+        results= float(ans[1])/float(ans[0])
+        #得出肩膀之斜率
+        #print(results)
+        #印出肩膀結果
+
+        #陣列(雙腳)
+        d1=self.RA
+        d2=self.LA
+        #存放兩個陣列的變數
+        ans2 = list(map(lambda x: (x[0]-x[1]), zip(d2,d1)))
+        #進行陣列內第0跟1位置的計算
+        results2= float(ans2[1])/float(ans2[0])
+        #得出雙腳之斜率
+        #print(results2)
+        #印出雙腳結果
+        if abs(results-results2)<0.15:
             return 1
         else:
             return 0
 
+    #雙腳間距有無超出肩膀寬度
     def measureShouldersAndAnkles(self):
-        
         sxx=math.pow((self.RS[0]-self.LS[0]), 2)
         syy=math.pow((self.RS[1]-self.LS[1]), 2)
         s_dis=math.sqrt(sxx+syy)
@@ -74,7 +98,8 @@ class Human:
         else:
             return 0
 
-    def mesureHandAndKnee(self):
+    #膝蓋有沒有超出手
+    def measureHandAndKnee(self):
         a=self.RW[1]-self.RS[1]
         b=self.RS[0]-self.RW[0]
         c=(self.RW[0]*self.RS[1])-(self.RS[0]*self.RW[1])
@@ -109,6 +134,17 @@ class Human:
         rk = self.RK[1]
 
         if (mh-rk<0.2):
+                
+    #手臂有沒有彎曲    
+    def measureArmAndBent(self):
+        c1=self.RS
+        c2=self.RE
+        c3=self.RW
+        ans3 = list(map(lambda x: (x[0]-x[1]), zip(c2,c1)))        
+        results2= float(ans3[1])/float(ans3[0])     
+        ans4 = list(map(lambda x: (x[0]-x[1]), zip(c3,c2)))     
+        results3= float(ans4[1])/float(ans4[0])     
+        if abs(results2==results3):
             return 1
         else:
             return 0
@@ -138,4 +174,14 @@ class Human:
         if diff<th:
             return 1
         else:
+            return 0
+
+    #measure if neck and bottom back at the same time
+    def measureNeckAndBottom(self, ineck, ibottom):
+        difNeck=abs(self.Neck[0]-ineck)
+        difBottom=abs(self.Neck[0]-MH[0])
+
+        if difNeck<0.15 && difBottom<0.15: #both back
+           return 1
+        else: 
             return 0
