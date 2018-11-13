@@ -111,11 +111,6 @@ def main():
             #print("1 m_WristsAndAnkles:", frontView.measureWristsAndAnkles())
             #print("2 m_Shoulders And Anless Parallel:", frontView.measureShouldersAndAnleesParallel())
             #print("3 m_Shoulder And Ankles:", frontView.measureShouldersAndAnkles())
-            #if(ib == 0):
-<<<<<<< HEAD
-                #ib = frontView.getInitBack()
-=======
-                #ib = frontView.getInitialBack()
 
             if(frontView.measureWristsAndAnkles() == 0):
                 txt_err='手腕未超出腳踝'
@@ -149,7 +144,6 @@ def main():
                 txt_err='臀位過高'
                 #print on view
                 continue
->>>>>>> ce4b1f0757a730c333384062996c2257654146bb
             
             #print(frontView.measureBack(ib['IB']))
             #print(frontView.getInitialBack())
