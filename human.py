@@ -55,9 +55,9 @@ class Human:
     #肩膀有無和雙腳平行
     def measureShouldersAndAnleesParallel(self):
         soulder_ans = self.LS-self.RS
-        soulder_result = float(ans[1])/float(ans[0])
+        soulder_result = float(soulder_ans[1])/float(soulder_ans[0])
         anlees_ans = self.LA-self.RA
-        anless_result = float(ans2[1])/float(ans2[0])
+        anless_result = float(anlees_ans[1])/float(anlees_ans[0])
         if abs(soulder_result-anless_result)<0.15:
             return 1
         return 0		
@@ -87,10 +87,10 @@ class Human:
         print("mHAK_e", e)
         d=abs((a*self.LK[0])+(b*self.LK[1])+c)/e
         print("mHAK_d", d)
-        if self.LS[0] <= self.LK[0]:
-            print("1")
-            if self.LW[0] <= self.LK[0]:
-                print("2")
+        if self.LS[1] < self.LK[1] and self.LW[1] > self.LK[1]:
+            #print("1")
+            if self.LS[0] > self.LK[0] and self.LW[0] > self.LK[0]:
+                #print("2")
                 if d>0:
                     print(3)
                     return 1
@@ -105,7 +105,7 @@ class Human:
         difSE = np.absolute(np.around(self.LS)-np.around(self.LE))
         SE_results = float(difSE[0])/float(difSE[1])		
         difEW = np.absolute(np.around(self.LE)-np.around(self.LW))
-        EW_results = float(ans4[0])/float(ans4[1])		
+        EW_results = float(difSE[0])/float(difEW[1])		
         if abs(SE_results-EW_results)<0.2:
             return 1
         return 0
@@ -114,7 +114,7 @@ class Human:
         mh = self.MH[1]
         lk = self.LK[1]
 
-        if (mh-lk<0.2):
+        if (abs(mh-lk)<3):
             return 1
         return 0
                 
@@ -156,7 +156,9 @@ class Human:
         difNeck = abs(self.Neck[0]-ineck[0])
         difBottom = abs(self.MH[0]-ibottom[0])
         difKnee = abs(self.LK[0]-iknee[0])
-
-        if difNeck<0.15 and difBottom<0.15 and difKnee<0.15: #both back
+        print("mNAB_Neck", difNeck)
+        print("mNAB_Bottom", difBottom)
+        print("mNAB_Knee", difKnee)
+        if difNeck<3 and difBottom<3 and difKnee<3: #both back
            return 1
         return 0
