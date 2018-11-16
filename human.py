@@ -36,12 +36,11 @@ class Human:
 
         
     def getTArch(self):
-        return np.array([[self.Neck], [self.RS], [self.LS], [self.MH]])
+        return np.array([self.Neck, self.RS, self.LS, self.MH])
     
     def measureTArch(self, tarch):
-        t = np.absolute(self.getTArch()-tarch)
-        print("measureTArch:", t)
-        if t.any()>5:
+        difArch = np.absolute(self.getTArch()-tarch)
+        if difArch.any()>5:
             return 0
         return 1
 
@@ -49,42 +48,32 @@ class Human:
     def measureWristsAndAnkles(self):
         hwidth = abs(self.RW[0]-self.LW[0])
         fwidth = abs(self.RA[0]-self.LA[0])
-        print("mWAA_hwidth", hwidth)
-        print("mWAA_fwidth", fwidth)
         if hwidth > fwidth:
             return 1
-        else:
-            return 0
+        return 0
     
     #肩膀有無和雙腳平行
     def measureShouldersAndAnleesParallel(self):
-        ans = self.LS-self.RS
-        results= float(ans[1])/float(ans[0])
-        ans2 = self.LA-self.RA
-        results2= float(ans2[1])/float(ans2[0])
-        if abs(results-results2)<0.15:
+        soulder_ans = self.LS-self.RS
+        soulder_result = float(ans[1])/float(ans[0])
+        anlees_ans = self.LA-self.RA
+        anless_result = float(ans2[1])/float(ans2[0])
+        if abs(soulder_result-anless_result)<0.15:
             return 1
-        else:
-            return 0		
+        return 0		
 
     #雙腳間距有無超出肩膀寬度
     def measureShouldersAndAnkles(self):
-        sxx=math.pow((self.RS[0]-self.LS[0]), 2)
-        syy=math.pow((self.RS[1]-self.LS[1]), 2)
-        s_dis=math.sqrt(sxx+syy)
-        print("mSAA_sxx", sxx)
-        print("mSAA_syy", syy)
-        axx=math.pow((self.RA[0]-self.LA[0]), 2)
-        ayy=math.pow((self.RA[1]-self.LA[1]), 2)
-        print("mSAA_axx", axx)
-        print("mSAA_ayy", ayy)
-        a_dis=math.sqrt(axx+ayy)
-        print("mSAA_sdis", s_dis)
-        print("mSAA_adis", a_dis)
-        if a_dis>=s_dis:
+        soulder_x = math.pow((self.RS[0]-self.LS[0]), 2)
+        soulder_y = math.pow((self.RS[1]-self.LS[1]), 2)
+        soulder_dis = math.sqrt(soulder_x+soulder_y)
+
+        ankle_x = math.pow((self.RA[0]-self.LA[0]), 2)
+        ankle_y = math.pow((self.RA[1]-self.LA[1]), 2)
+        ankle_dis = math.sqrt(ankle_x+ankle_y)
+        if ankle_dis >= soulder_dis:
             return 1
-        else:
-            return 0
+        return 0
 
     #膝蓋有沒有超出手
     def measureHandAndKnee(self):
@@ -113,25 +102,13 @@ class Human:
             return 0
 				
     def measureArmAndBent(self):		
-        
-        ans3 = np.absolute(np.around(self.LS)-np.around(self.LE))
-        print("mAAB_LS", self.LS)
-        print("mAAB_LE", self.LE)
-        results2= float(ans3[0])/float(ans3[1])		
-        
-        ans4 = np.absolute(np.around(self.LE)-np.around(self.LW))
-        print("mAAB_LE", self.LE)
-        print("mAAB_LW", self.LW)
-        results3= float(ans4[0])/float(ans4[1])		
-        
-        print("results2", results2)
-        print("results3", results3)
-
-        if abs(results2-results3)<0.2:
-            print("mAAB_LS", self.LS)
+        difSE = np.absolute(np.around(self.LS)-np.around(self.LE))
+        SE_results = float(difSE[0])/float(difSE[1])		
+        difEW = np.absolute(np.around(self.LE)-np.around(self.LW))
+        EW_results = float(ans4[0])/float(ans4[1])		
+        if abs(SE_results-EW_results)<0.2:
             return 1
-        else:
-            return 0
+        return 0
 
     def measureHipAndKnee(self):
         mh = self.MH[1]
@@ -161,8 +138,8 @@ class Human:
         #Threshold
         th=10 
 
-        nbh=math.pow((self.Nose[0]-self.MH[0]), 2)
-        nbw=math.pow((self.Nose[1]-self.MH[1]), 2)
+        nbh=math.pow((self.Neck[0]-self.MH[0]), 2)
+        nbw=math.pow((self.Neck[1]-self.MH[1]), 2)
         nb=math.sqrt(nbh+nbw)
         
         print("ib", ib)
@@ -182,5 +159,4 @@ class Human:
 
         if difNeck<0.15 and difBottom<0.15 and difKnee<0.15: #both back
            return 1
-        else: 
-            return 0
+        return 0
