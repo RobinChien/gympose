@@ -123,7 +123,7 @@ class GUI:
             if self.status>3:
                 print(i)
                 i += 1
-                self.status = 2
+                self.status = 1
             print(self.status)
             self.lb[self.status].config(bg=self.lb_color[1])
             if self.status>0:
@@ -148,14 +148,14 @@ class GUI:
                 continue
             
             if self.status == 1:
-                if(frontView.measureWristsAndAnkles() == 0):
-                    var_err.set('手腕未超出腳踝')
+                if(sideView.measureHandAndKnee() == 0):
+                    var_err.set('膝蓋沒有超出手臂')
                     continue
-                #if(sideView.measureHandAndKnee() == 0):
-                    #var_err.set('膝蓋沒有超出手臂')
-                    #continue
                 if(sideView.measureHipAndKnee() == 0):
                     var_err.set('臀位過高')
+                    continue
+                if(frontView.measureWristsAndAnkles() == 0):
+                    var_err.set('手腕未超出腳踝')
                     continue
                 #if(sideView.measureBack(barch_s[0][0]) == 0):
                     #var_err.set('圓背')
@@ -164,6 +164,15 @@ class GUI:
                 continue
             
             if self.status == 2:
+                if(sideView.measureHandAndKnee() == 0):
+                    var_err.set('膝蓋沒有超出手臂')
+                    continue
+                if(sideView.measureHipAndKnee() == 0):
+                    var_err.set('臀位過高')
+                    continue
+                if(frontView.measureWristsAndAnkles() == 0):
+                    var_err.set('手腕未超出腳踝')
+                    continue
                 if(sideView.measureArmAndBent() == 0):
                     var_err.set('手臂彎曲')
                     continue
