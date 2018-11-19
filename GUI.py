@@ -201,6 +201,10 @@ class GUI:
                     self.status += 1
                     continue
                 continue
+
+            if self.status== 4:
+                self.status += 1
+                continue
     
     def closeWindow(self):
         self.frontCam.stop()
