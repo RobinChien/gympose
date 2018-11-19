@@ -21,8 +21,8 @@ class GUI:
         # Create a canvas that can fit the above video source size
         self.frontCanvas = tkinter.Canvas(window, width = 533, height = 400)
         self.sideCanvas = tkinter.Canvas(window, width = 533, height = 400)
-        self.frontCanvas.grid(row=0, column=0, rowspan=7, sticky='w')
-        self.sideCanvas.grid(row=7, column=0, sticky='w')
+        self.frontCanvas.grid(row=0, column=0, rowspan=8, sticky='w')
+        self.sideCanvas.grid(row=8, column=0, sticky='w')
        
         #OpenPose Paramas
         self.params = self.set_params()
@@ -33,15 +33,17 @@ class GUI:
         self.lb_downtxt = tkinter.Label(self.window, text='Down', font=('Arial', 15), width=15)
         self.lb_prepare = tkinter.Label(self.window, text='Please Prepare', font=('Arial', 15), width=15)
         self.lb_catch = tkinter.Label(self.window, text='Please Catch', font=('Arial', 15), width=15)
-        self.lb_start = tkinter.Label(self.window, text='Please Ready', font=('Arial', 15), width=15)
-        self.lb_end = tkinter.Label(self.window, text='Start', font=('Arial', 15), width=15)
-        self.lb = [self.lb_prepare, self.lb_catch, self.lb_start, self.lb_end]
+        self.lb_ready = tkinter.Label(self.window, text='Please Ready', font=('Arial', 15), width=15)
+        self.lb_start = tkinter.Label(self.window, text='Start', font=('Arial', 15), width=15)
+        self.lb_end = tkinter.Label(self.window, text='End', font=('Arial', 15), width=15)
+        self.lb = [self.lb_prepare, self.lb_catch, self.lb_ready, self.lb_start, self.lb_end]
         
         self.lb_downtxt.grid(row=1, column=2, padx=3, pady=3, sticky='nes')
         self.lb_prepare.grid(row=2, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
         self.lb_catch.grid(row=3, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
-        self.lb_start.grid(row=4, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
-        self.lb_end.grid(row=5, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
+        self.lb_ready.grid(row=4, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
+        self.lb_start.grid(row=5, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
+        self.lb_end.grid(row=6, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
         
         # Button
         self.btn_start = tkinter.Button(self.window, text="Start", font=('Arial', 15), width=15, command=self.start)
@@ -102,7 +104,6 @@ class GUI:
         params["num_gpu_start"] = 0
         params["disable_blending"] = False
         # Ensure you point to the correct path where models are located
-        print(dir_path)
         params["default_model_folder"] = dir_path + "/../../../models/"
         return params
     
@@ -111,24 +112,22 @@ class GUI:
         var_down = tkinter.IntVar()
         self.lb_down = tkinter.Label(self.window, textvariable=var_down, font=('Arial', 15), width=15)
         self.lb_down.grid(row=1, column=1, padx=3, pady=3, sticky='new')
-        self.lb_error = tkinter.Label(self.window, textvariable=var_err, font=('Arial', 15), width=15)
-        self.lb_error.grid(row=6, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
+        self.lb_error = tkinter.Label(self.window, textvariable=var_err, font=('Arial', 15), fg=self.lb_color[0], width=15)
+        self.lb_error.grid(row=7, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
         i = 0
 
         while 1:
             frontView = human.Human(self.frontPoints)
             sideView = human.Human(self.sidePoints)
             var_down.set(i)
-            print(type(self.status)) 
-            if self.status>3:
-                print(i)
+            if self.status>4:
                 i += 1
                 self.status = 1
-            print(self.status)
             self.lb[self.status].config(bg=self.lb_color[1])
             if self.status>0:
-                self.lb[self.status-1].config(bg=self.lb_color[2])
-            time.sleep(3)
+                self.lb[self.status-1].config(bg='gray')
+            
+            time.sleep(1.5)
             var_err.set('')
             print("status:", self.status)
 
@@ -184,6 +183,9 @@ class GUI:
                 continue
 
             if self.status == 3:
+                if(frontView.measureWristsAndAnkles() == 0):
+                    var_err.set('手腕未超出腳踝')
+                    continue
                 if(sideView.measureArmAndBent() == 0):
                     var_err.set('手臂彎曲')
                     continue
@@ -191,9 +193,10 @@ class GUI:
                     #var_err.set('圓背')
                     #continue
                 if(frontView.measureTArch(tarch_s)):
+                    barch_e = sideView.getInitBack()
                     if(frontView.measureShouldersAndAnleesParallel() == 0):
                         var_err.set('肩膀和雙腳未平行')
-                    if(sideView.measureNeckAndBottom(barch_s[1], barch_s[2], barch_s[3]) == 0):
+                    if(sideView.measureNeckAndBottom(barch_s, barch_e) == 0):
                         var_err.set('脖子與臀位缺乏連動性')
                     self.status += 1
                     continue
