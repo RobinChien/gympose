@@ -122,22 +122,27 @@ class Human:
     def measureRoundedShoulders(self):
         longer_ans = self.LE-self.MH
         longer_result = float(longer_ans[1])/float(longer_ans[0])
+        print("mRS_Longerans", longer_ans)
 
         shorter_ans = self.LS-self.MH
         shorter_result = float(shorter_ans[1])/float(shorter_ans[0])
+        print("mRS_shortrtans", shorter_ans)
         
+        print("mRS_longer", longer_result)
+        print("mRS_shorter", shorter_result)
+
         if (longer_result<0) and (shorter_result<0):
-            if (longer_result-shorter_result)<=0:
+            if (longer_result-shorter_result)>=0:
                 return 1
             return 0
 
         if (longer_result>0) and (shorter_result>0):
-            if (longer_result-shorter_result)<=0:
+            if (longer_result-shorter_result)>=0:
                 return 1
             return 0
 
         if (longer_result>0) and (shorter_result<0):
-            if (longer_result-shorter_result)>=0:
+            if (longer_result-shorter_result)<=0:
                 return 1
             return 0
 
