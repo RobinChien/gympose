@@ -33,6 +33,8 @@ class Human:
         self.LK = keypoints[0][13]
         #{14, "LAnkle"},!!
         self.LA = keypoints[0][14]
+        #{18, "LEar"},
+        self.LE = keypoints[0][18]
 
 
     def getTArch(self):
@@ -117,39 +119,36 @@ class Human:
             return 1
         return 0
 
-    # def getinitBack(self):
-    #     print('gIB_Neck', self.Neck)
-    #     print('gIB_MH', self.MH)
-    #     bh=math.pow((self.Neck[0]-self.MH[0]), 2)
-    #     bw=math.pow((self.Neck[1]-self.MH[1]), 2)
-    #     print("gIB_bh", bh)
-    #     print("gIB_bw", bw)
-    #     ib=math.sqrt(bh+bw)
-    #     print("gIB_ib", ib)
-    #     return np.array([[ib], self.Neck, self.MH, self.LK])
+    def measureRoundedShoulders(self):
+        longer_ans = self.LE-self.MH
+        longer_result = float(longer_ans[1])/float(longer_ans[0])
 
-    #measure Back
-    # def measureBack(self, ib):
+        shorter_ans = self.LS-self.MH
+        shorter_result = float(shorter_ans[1])/float(shorter_ans[0])
+        
+        if (longer_result<0) and (shorter_result<0):
+            if (longer_result-shorter_result)<=0:
+                return 1
+            return 0
 
-    #     #Threshold
-    #     th=10
+        if (longer_result>0) and (shorter_result>0):
+            if (longer_result-shorter_result)<=0:
+                return 1
+            return 0
 
-    #     nbh=math.pow((self.Neck[0]-self.MH[0]), 2)
-    #     nbw=math.pow((self.Neck[1]-self.MH[1]), 2)
-    #     nb=math.sqrt(nbh+nbw)
+        if (longer_result>0) and (shorter_result<0):
+            if (longer_result-shorter_result)>=0:
+                return 1
+            return 0
 
-    #     print("ib", ib)
-    #     diff=abs(ib-nb)
-    #     print("diff", diff)
+        if (longer_result<0) and (shorter_result>0):
+            if (longer_result-shorter_result)<=0:
+                return 1
+            return 0
 
-    #     if diff<th:
-    #         return 1
-    #     else:
-    #         return 0
 
     def measureNeckAndBottom(self, tarch_s, tarch_e):
         difArch = np.absolute(tarch_e-tarch_s)
-        print
         if difArch[0][1]<3 and difArch[1][1]<3 and difArch[2][1]<4 and difArch[3][1]<3:
            return 1
         return 0
