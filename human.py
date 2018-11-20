@@ -37,32 +37,29 @@ class Human:
         self.LE = keypoints[0][18]
 
 
-
     def getTArch(self):
         return np.array([self.Neck, self.RS, self.LS, self.MH])
 
     def measureTArch(self, tarch):
         difArch = np.absolute(self.getTArch()-tarch)
-        if difArch.any()>5:
-            return 0
-        return 1
+        print('mTA_getTArch()', self.getTArch())
+        print('mTA_tarch', tarch)
+        print('mTA_difArch', difArch)
+        if difArch[0][1]<5 or difArch[3][1]<5:
+            return 1
+        return 0
 
     def getBArch(self):
-        print('gIB_Neck', self.Neck)
-        print('gIB_MH', self.MH)
-        bh=math.pow((self.Neck[0]-self.MH[0]), 2)
-        bw=math.pow((self.Neck[1]-self.MH[1]), 2)
-        print("gIB_bh", bh)
-        print("gIB_bw", bw)
-        ib=math.sqrt(bh+bw)
-        print("gIB_ib", ib)
         return np.array([self.Neck, self.MH, self.LK])
 
     def measureBArch(self, barch):
         difArch = np.absolute(self.getBArch()-barch)
-        if difArch.any()>5:
-            return 0
-        return 1
+        print('mBA_getBArch()', self.getBArch())
+        print('mBA_barch', barch)
+        print('mBA_difArch', difArch)
+        if difArch[0].any()<5 and difArch[1].any()<15 and difArch[2][0]<25 and difArch[2][1]>10:
+            return 1
+        return 0
 
     def measureWristsAndAnkles(self):
         hwidth = abs(self.RW[0]-self.LW[0])
@@ -74,9 +71,10 @@ class Human:
     def measureShouldersAndAnleesParallel(self):
         soulder_ans = self.LS-self.RS
         soulder_result = float(soulder_ans[1])/float(soulder_ans[0])
-        anlees_ans = self.LA-self.RA
-        anless_result = float(anlees_ans[1])/float(anlees_ans[0])
-        if abs(soulder_result-anless_result)<0.15:
+        anless_ans = self.LA-self.RA
+        anless_result = float(anless_ans[1])/float(anless_ans[0])
+        print(abs(soulder_result-anless_result))
+        if abs(soulder_result-anless_result)<0.1:
             return 1
         return 0
 
@@ -117,7 +115,7 @@ class Human:
         mh = self.MH[1]
         lk = self.LK[1]
 
-        if (abs(mh-lk)<3):
+        if (abs(mh-lk)<28):
             return 1
         return 0
 
@@ -148,44 +146,9 @@ class Human:
                 return 1
             return 0
 
-    # def getinitBack(self):
-    #     print('gIB_Neck', self.Neck)
-    #     print('gIB_MH', self.MH)
-    #     bh=math.pow((self.Neck[0]-self.MH[0]), 2)
-    #     bw=math.pow((self.Neck[1]-self.MH[1]), 2)
-    #     print("gIB_bh", bh)
-    #     print("gIB_bw", bw)
-    #     ib=math.sqrt(bh+bw)
-    #     print("gIB_ib", ib)
-    #     return np.array([[ib], self.Neck, self.MH, self.LK])
 
-    #measure Back
-    # def measureBack(self, ib):
-
-    #     #Threshold
-    #     th=10
-
-    #     nbh=math.pow((self.Neck[0]-self.MH[0]), 2)
-    #     nbw=math.pow((self.Neck[1]-self.MH[1]), 2)
-    #     nb=math.sqrt(nbh+nbw)
-
-    #     print("ib", ib)
-    #     diff=abs(ib-nb)
-    #     print("diff", diff)
-
-    #     if diff<th:
-    #         return 1
-    #     else:
-    #         return 0
-
-    def measureNeckAndBottom(self, barch_s, barch_e):
-        # difNeck = abs(self.Neck[0]-ineck[0])
-        # difBottom = abs(self.MH[0]-ibottom[0])
-        # difKnee = abs(self.LK[0]-iknee[0])
-        # print("mNAB_Neck", difNeck)
-        # print("mNAB_Bottom", difBottom)
-        # print("mNAB_Knee", difKnee)
-        difArch = np.absolute(barch_e-barch_s)
-        if difArch.all()<3: #both back
+    def measureNeckAndBottom(self, tarch_s, tarch_e):
+        difArch = np.absolute(tarch_e-tarch_s)
+        if difArch[0][1]<3 and difArch[1][1]<3 and difArch[2][1]<4 and difArch[3][1]<3:
            return 1
         return 0
