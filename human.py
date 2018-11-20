@@ -128,22 +128,22 @@ class Human:
         shorter_ans = self.LS-self.MH
         shorter_result = float(shorter_ans[1])/float(shorter_ans[0])
         
-        if (longer_result<0) && (shorter_result<0):
+        if (longer_result<0) and (shorter_result<0):
             if (longer_result-shorter_result)<=0:
                 return 1
             return 0
 
-        if (longer_result>0) && (shorter_result>0):
+        if (longer_result>0) and (shorter_result>0):
             if (longer_result-shorter_result)<=0:
                 return 1
             return 0
 
-        if (longer_result>0) && (shorter_result<0):
+        if (longer_result>0) and (shorter_result<0):
             if (longer_result-shorter_result)>=0:
                 return 1
             return 0
 
-        if (longer_result<0) && (shorter_result>0):
+        if (longer_result<0) and (shorter_result>0):
             if (longer_result-shorter_result)<=0:
                 return 1
             return 0
