@@ -172,9 +172,6 @@ class GUI:
                 if(frontView.measureWristsAndAnkles() == 0):
                     var_err.set('手請再握寬一點')
                     continue
-                #if(sideView.measureBack(barch_s[0][0]) == 0):
-                    #var_err.set('圓背')
-                    #continue
                 self.status += 1
                 continue
 
@@ -191,9 +188,9 @@ class GUI:
                 if(sideView.measureArmAndBent() == 0):
                     var_err.set('手臂請打直')
                     continue
-                #if(sideView.measureBack(barch_s[0][0]) == 0):
-                    #var_err.set('圓背')
-                    #continue
+                if(sideView.measureRoundedShoulders() == 0):
+                    var_err.set('圓背')
+                    continue
                 tarch_e = frontView.getTArch()
                 self.status += 1
                 continue
@@ -205,13 +202,12 @@ class GUI:
                 if(sideView.measureArmAndBent() == 0):
                     var_err.set('手臂請打直')
                     continue
-                #if(sideView.measureBack(barch_s[0][0]) == 0):
-                    #var_err.set('圓背')
-                    #continue
                 if(frontView.measureTArch(tarch_s)):
                     tarch_e = frontView.getTArch()
                     if(frontView.measureShouldersAndAnleesParallel() == 0):
                         var_err.set('肩膀和雙腳請保持平行')
+                    if(sideView.measureBack(barch_s[0][0]) == 0):
+                        var_err.set('圓背')
                     if(sideView.measureNeckAndBottom(tarch_s, tarch_e) == 0):
                         var_err.set('脖子與臀位缺乏連動性')
                     self.status += 1
