@@ -155,7 +155,7 @@ class GUI:
                         j = 0
                         continue
                     j += 1
-                    time.sleep(0.3)
+                    time.sleep(0.15)
                     continue
                 tarch_s = frontView.getTArch()
                 barch_s = sideView.getBArch()
@@ -206,7 +206,7 @@ class GUI:
                     tarch_e = frontView.getTArch()
                     if(frontView.measureShouldersAndAnleesParallel() == 0):
                         var_err.set('肩膀和雙腳請保持平行')
-                    if(sideView.measureBack(barch_s[0][0]) == 0):
+                    if(sideView.measureRoundedShoulders() == 0):
                         var_err.set('圓背')
                     if(sideView.measureNeckAndBottom(tarch_s, tarch_e) == 0):
                         var_err.set('脖子與臀位缺乏連動性')

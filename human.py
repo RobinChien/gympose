@@ -74,7 +74,7 @@ class Human:
         anless_ans = self.LA-self.RA
         anless_result = float(anless_ans[1])/float(anless_ans[0])
         print(abs(soulder_result-anless_result))
-        if abs(soulder_result-anless_result)<0.1:
+        if abs(soulder_result-anless_result)<0.15:
             return 1
         return 0
 
@@ -107,7 +107,10 @@ class Human:
         SE_results = float(difSE[0])/float(difSE[1])
         difEW = np.absolute(np.around(self.LE)-np.around(self.LW))
         EW_results = float(difSE[0])/float(difEW[1])
-        if abs(SE_results-EW_results)<0.2:
+        print('SE_result', SE_results)
+        print('EW_result', EW_results)
+        print('result', SE_results-EW_results)
+        if abs(SE_results-EW_results)<0.25:
             return 1
         return 0
 
@@ -154,6 +157,7 @@ class Human:
 
     def measureNeckAndBottom(self, tarch_s, tarch_e):
         difArch = np.absolute(tarch_e-tarch_s)
+        print('mNAB_difArch', difArch)
         if difArch[0][1]<3 and difArch[1][1]<3 and difArch[2][1]<4 and difArch[3][1]<3:
            return 1
         return 0
