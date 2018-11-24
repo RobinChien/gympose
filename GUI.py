@@ -206,7 +206,7 @@ class GUI:
                     if(frontView.measureShouldersAndAnleesParallel() == 0):
                         var_err.set('肩膀和雙腳請保持平行')
                     if(sideView.measureNeckAndBottom(barch_s, barch_e) == 0):
-                        var_err.set('脖子與臀位缺乏連動性')
+                        var_err.set('臀部與雙腿缺乏連動性')
                     self.status += 1
                     continue
                 continue
