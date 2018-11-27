@@ -38,11 +38,11 @@ class Human:
         self.LA = keypoints[0][14]
         #{18, "LEar"},
         self.LE = keypoints[0][18]
-		self.__class__.num_count += 1
-		print("Init", Human.num_count)
+        self.__class__.num_count += 1
+        print("Init", Human.num_count)
 
-	def __del__(self):
-		self.__class__.num_count -= 1  
+    def __del__(self):
+        self.__class__.num_count -= 1  
         print("Del", self.__class__.num_count)
 
     def getTArch(self):
