@@ -2,9 +2,8 @@ import math
 import numpy as np
 
 class Human:
-
-	num_count = 0
-
+    num_count = 0
+    
     def __init__(self, keypoints):
         #{0,  "Nose"},
         self.Nose = keypoints[0][0]
@@ -38,11 +37,11 @@ class Human:
         self.LA = keypoints[0][14]
         #{18, "LEar"},
         self.LE = keypoints[0][18]
-        self.__class__.num_count += 1
+        #self.__class__.num_count += 1
         print("Init", Human.num_count)
 
     def __del__(self):
-        self.__class__.num_count -= 1  
+        #self.__class__.num_count -= 1  
         print("Del", self.__class__.num_count)
 
     def getTArch(self):

@@ -69,19 +69,16 @@ class GUI:
     def start(self):
         if self.started:
             print("exist")
+        print('---------------------')
         self.started = True
         self.worker = Thread(target=self.flow, args=())
         self.worker.start()
-        # if self.worker is None or not self.worker.is_alive():
-        #     self.worker = Thread(target=self.flow, args=())
-        #     self.worker.start()
-        # else:
-        #     print("exist")
 
     def end(self):
         if self.started:
             for i in self.lb:
                 i.config(bg=self.lb_color[2])
+            self.status = 0
             self.started = False
             self.worker.join()
             print('end')
@@ -125,8 +122,13 @@ class GUI:
         self.lb_error.grid(row=7, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
         i = 0
         j = 0
+        frontView = None
+        sideView = None
 
         while self.started:
+            if(frontView != None and sideView != None):
+                del frontView
+                del sideView
             frontView = human.Human(self.frontPoints)
             sideView = human.Human(self.sidePoints)
             var_down.set(i)
@@ -208,7 +210,7 @@ class GUI:
                         var_err.set('肩膀和雙腳請保持平行')
                     if(sideView.measureRoundedShoulders() == 0):
                         var_err.set('圓背')
-                    if(sideView.measureNeckAndBottom(barch_s, barch_e) == 0):
+                    if(sideView.measureNeckAndBottom(tarch_s, tarch_e) == 0):
                         var_err.set('臀部與雙腿缺乏連動性')
                     self.status += 1
                     continue
