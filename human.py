@@ -3,7 +3,7 @@ import numpy as np
 
 class Human:
     num_count = 0
-    
+
     def __init__(self, keypoints):
         #{0,  "Nose"},
         self.Nose = keypoints[0][0]
@@ -41,12 +41,14 @@ class Human:
         print("Init", Human.num_count)
 
     def __del__(self):
-        #self.__class__.num_count -= 1  
+        #self.__class__.num_count -= 1
         print("Del", self.__class__.num_count)
 
+    #T Architecture of Neck, RShoulder, LShoulder, MidHip
     def getTArch(self):
         return np.array([self.Neck, self.RS, self.LS, self.MH])
 
+    #Measure T Architecture Status
     def measureTArch(self, tarch):
         difArch = np.absolute(self.getTArch()-tarch)
         print('mTA_getTArch()', self.getTArch())
@@ -56,18 +58,7 @@ class Human:
             return 1
         return 0
 
-    def getBArch(self):
-        return np.array([self.Neck, self.MH, self.LK])
-
-    def measureBArch(self, barch):
-        difArch = np.absolute(self.getBArch()-barch)
-        print('mBA_getBArch()', self.getBArch())
-        print('mBA_barch', barch)
-        print('mBA_difArch', difArch)
-        if difArch[0].any()<5 and difArch[1].any()<15 and difArch[2][0]<25 and difArch[2][1]>10:
-            return 1
-        return 0
-
+    #Measure Ankles Width is Longer than Wrists Width or not
     def measureWristsAndAnkles(self):
         hwidth = abs(self.RW[0]-self.LW[0])
         fwidth = abs(self.RA[0]-self.LA[0])
@@ -75,6 +66,7 @@ class Human:
             return 1
         return 0
 
+    #Measure Shoulders and Anlees is Parallel or not
     def measureShouldersAndAnleesParallel(self):
         soulder_ans = self.LS-self.RS
         soulder_result = float(soulder_ans[1])/float(soulder_ans[0])
@@ -85,6 +77,7 @@ class Human:
             return 1
         return 0
 
+    #Measure Ankles Width is Longer than Shoulders Width or not
     def measureShouldersAndAnkles(self):
         soulder_x = math.pow((self.RS[0]-self.LS[0]), 2)
         soulder_y = math.pow((self.RS[1]-self.LS[1]), 2)
@@ -97,6 +90,7 @@ class Human:
             return 1
         return 0
 
+    #Measure Hands Width is Longer than Knees Width or not
     def measureHandAndKnee(self):
         a=self.LW[1]-self.LS[1]
         b=self.LS[0]-self.LW[0]
@@ -109,6 +103,7 @@ class Human:
                     return 1
         return 0
 
+    #Measure Arms is Bent or not
     def measureArmAndBent(self):
         difSE = np.absolute(np.around(self.LS)-np.around(self.LE))
         SE_results = float(difSE[0])/float(difSE[1])
@@ -121,6 +116,7 @@ class Human:
             return 1
         return 0
 
+    #Measure Middle Hip is Parallel Knees or not
     def measureHipAndKnee(self):
         mh = self.MH[1]
         lk = self.LK[1]
@@ -129,6 +125,7 @@ class Human:
             return 1
         return 0
 
+    #Measure Round Shoulders or not
     def measureRoundedShoulders(self):
         longer_ans = self.LE-self.MH
         longer_result = float(longer_ans[1])/float(longer_ans[0])
@@ -137,7 +134,7 @@ class Human:
         shorter_ans = self.LS-self.MH
         shorter_result = float(shorter_ans[1])/float(shorter_ans[0])
         print("mRS_shortrtans", shorter_ans)
-        
+
         print("mRS_longer", longer_result)
         print("mRS_shorter", shorter_result)
 
@@ -161,7 +158,7 @@ class Human:
                 return 1
             return 0
 
-
+    #Measure Neck And Bottom has Gearing or not
     def measureNeckAndBottom(self, tarch_s, tarch_e):
         difArch = np.absolute(tarch_e-tarch_s)
         print('mNAB_difArch', difArch)
