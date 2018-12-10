@@ -76,11 +76,13 @@ class GUI:
 
     def end(self):
         if self.started:
-            for i in self.lb:
-                i.config(bg=self.lb_color[2])
+            del self.frontView
+            del self.sideView
             self.status = 0
             self.started = False
             self.worker.join()
+            for i in self.lb:
+                i.config(bg=self.lb_color[2])
             print('end')
 
     def update(self):
@@ -122,15 +124,15 @@ class GUI:
         self.lb_error.grid(row=7, column=1, columnspan=2, padx=3, pady=3, sticky='nesw')
         i = 0
         j = 0
-        frontView = None
-        sideView = None
+        self.frontView = None
+        self.sideView = None
 
         while self.started:
-            if(frontView != None and sideView != None):
-                del frontView
-                del sideView
-            frontView = human.Human(self.frontPoints)
-            sideView = human.Human(self.sidePoints)
+            if(self.frontView != None and self.sideView != None):
+                del self.frontView
+                del self.sideView
+            self.frontView = human.Human(self.frontPoints)
+            self.sideView = human.Human(self.sidePoints)
             var_down.set(i)
             if self.status>0:
                 self.lb[self.status-1].config(bg=self.lb_color[2])
@@ -146,71 +148,70 @@ class GUI:
             if self.status == 0:
                 if j<3:
                     try:
-                        if(frontView.measureShouldersAndAnleesParallel() == 0):
+                        if(self.frontView.measureShouldersAndAnleesParallel() == 0):
                             var_err.set('肩膀和雙腳請保持平行')
                             j = 0
                             continue
                     except ZeroDivisionError as e:
                         continue
-                    if(frontView.measureShouldersAndAnkles() == 0):
+                    if(self.frontView.measureShouldersAndAnkles() == 0):
                         var_err.set('雙腳需超出肩膀寬度，請在打開一點')
                         j = 0
                         continue
                     j += 1
                     time.sleep(0.15)
                     continue
-                tarch_s = frontView.getTArch()
-                barch_s = sideView.getBArch()
+                tarch_s = self.frontView.getTArch()
                 self.status += 1
                 continue
 
             if self.status == 1:
-                if(sideView.measureHandAndKnee() == 0):
+                if(self.sideView.measureHandAndKnee() == 0):
                     var_err.set('膝蓋沒有超出手臂')
                     continue
-                if(sideView.measureHipAndKnee() == 0):
+                if(self.sideView.measureHipAndKnee() == 0):
                     var_err.set('臀位過高')
                     continue
-                if(frontView.measureWristsAndAnkles() == 0):
+                if(self.frontView.measureWristsAndAnkles() == 0):
                     var_err.set('手請再握寬一點')
                     continue
                 self.status += 1
                 continue
 
             if self.status == 2:
-                if(sideView.measureHandAndKnee() == 0):
+                if(self.sideView.measureHandAndKnee() == 0):
                     var_err.set('膝蓋沒有超出手臂')
                     continue
-                if(sideView.measureHipAndKnee() == 0):
+                if(self.sideView.measureHipAndKnee() == 0):
                     var_err.set('臀位過高')
                     continue
-                if(frontView.measureWristsAndAnkles() == 0):
+                if(self.frontView.measureWristsAndAnkles() == 0):
                     var_err.set('手請再握寬一點')
                     continue
-                if(sideView.measureArmAndBent() == 0):
+                if(self.sideView.measureArmAndBent() == 0):
                     var_err.set('手臂請打直')
                     continue
-                if(sideView.measureRoundedShoulders() == 0):
+                if(self.sideView.measureRoundedShoulders() == 0):
                     var_err.set('圓背')
                     continue
-                tarch_e = frontView.getTArch()
+                tarch_e = self.frontView.getTArch()
                 self.status += 1
                 continue
 
             if self.status == 3:
-                if(frontView.measureWristsAndAnkles() == 0):
+                if(self.frontView.measureWristsAndAnkles() == 0):
                     var_err.set('手請再握寬一點')
                     continue
-                if(sideView.measureArmAndBent() == 0):
+                if(self.sideView.measureArmAndBent() == 0):
                     var_err.set('手臂請打直')
                     continue
-                if(frontView.measureTArch(tarch_s)):
-                    tarch_e = frontView.getTArch()
-                    if(frontView.measureShouldersAndAnleesParallel() == 0):
+                if(self.frontView.measureTArch(tarch_s)):
+                    tarch_e = self.frontView.getTArch()
+                    if(self.frontView.measureShouldersAndAnleesParallel() == 0):
                         var_err.set('肩膀和雙腳請保持平行')
-                    if(sideView.measureRoundedShoulders() == 0):
+                    if(self.sideView.measureRoundedShoulders() == 0):
                         var_err.set('圓背')
-                    if(sideView.measureNeckAndBottom(tarch_s, tarch_e) == 0):
+                    if(self.sideView.measureNeckAndBottom(tarch_s, tarch_e) == 0):
                         var_err.set('臀部與雙腿缺乏連動性')
                     self.status += 1
                     continue
